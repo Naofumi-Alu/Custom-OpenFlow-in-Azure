@@ -51,7 +51,7 @@ services:
     restart: always
     volumes:
       - "./letsencrypt:/letsencrypt"
-      - "//var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
@@ -61,10 +61,10 @@ services:
       - traefik.frontend.passHostHeader=true
       - traefik.http.routers.http-router.entrypoints=websecure
       - traefik.http.routers.http-router.tls.certresolver=myresolver
-      - traefik.http.routers.http-router.rule=Host(`localhost.openiap.io`)
+      - traefik.http.routers.http-router.rule=Host(`openiap-orchestrator.eastus.cloudapp.azure.com`)
       - traefik.http.routers.http-router.service=http-service
       - traefik.http.services.http-service.loadbalancer.server.port=3000
-      - traefik.http.routers.grpc-router.rule=Host(`grpc.localhost.openiap.io`)
+      - traefik.http.routers.grpc-router.rule=Host(`grpc.openiap-orchestrator.eastus.cloudapp.azure.com`)
       - traefik.http.routers.grpc-router.service=grpc-service
       - traefik.http.routers.grpc-router.entrypoints=websecure
       - traefik.http.routers.grpc-router.tls.certresolver=myresolver
@@ -84,7 +84,7 @@ services:
       - auto_create_users=true
       - auto_create_domains=
       - protocol=https
-      - domain=localhost.openiap.io
+      - domain=openiap-orchestrator.eastus.cloudapp.azure.com
 
       # uncomment below 2 lines, if you have set replicas above 1
       # - enable_openflow_amqp=true
@@ -93,8 +93,8 @@ services:
       # - agent_docker_use_project=true  
 
       - agent_oidc_userinfo_endpoint=http://api:3000/oidc/me
-      - agent_oidc_issuer=https://localhost.openiap.io/oidc
-      - agent_oidc_authorization_endpoint=https://localhost.openiap.io/oidc/auth
+      - agent_oidc_issuer=https://openiap-orchestrator.eastus.cloudapp.azure.com/oidc
+      - agent_oidc_authorization_endpoint=https://openiap-orchestrator.eastus.cloudapp.azure.com/oidc/auth
       - agent_oidc_token_endpoint=http://api:3000/oidc/token
       - agent_docker_entrypoints=web,websecure
       - agent_docker_certresolver=myresolver
